@@ -4,9 +4,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * メインクラス
+ */
 public class FullToHalfString {
+	/**
+	 * FileControllerクラスのインスタンス
+	 */
 	private FileController file;
 
+	/**
+	 * メインメソッド
+	 * @param args 今回は使用しない
+	 */
 	public static void main(String[] args) {
 		FullToHalfString main = new FullToHalfString();
 		main.init();
@@ -18,6 +28,9 @@ public class FullToHalfString {
 		}
 	}
 
+	/**
+	 * 初期化クラス
+	 */
 	public void init(){
 		System.out.print("File path:");
 		Scanner scan = new Scanner(System.in);
@@ -30,6 +43,10 @@ public class FullToHalfString {
 		}
 	}
 
+	/**
+	 * 半角文字から全角文字へ変換するメソッド
+	 * @return
+	 */
 	public ArrayList<String> convert(){
 		ArrayList<String> beforeData=file.getData();
 		ArrayList<String> afterData=new ArrayList<String>();
@@ -38,10 +55,14 @@ public class FullToHalfString {
 			String output="";
 			for(char character:line.toCharArray()){
 				int code=(int)character;
-				//変換対象
-				if((code >= 0x0030) && (code <= 0x007A)){
+				//変換対象(半角英数の時)
+				if((code >= 0x0021) && (code <= 0x007E)){
 					code^=0xFF00;
 					code-=0x0020;
+				}
+				//変換対象(半角スペースの時)
+				if(code == 0x0020){
+					code=0x3000;
 				}
 				output+=(char)code;
 			}
